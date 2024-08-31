@@ -53,24 +53,12 @@ pipeline {
         }
     }
 
-   post {
-        success {
-            emailext(
-                to: 'ananthkt865@gmail.com',
-                subject: "Jenkins Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """<p>Good news! The Jenkins build <strong>${env.JOB_NAME} #${env.BUILD_NUMBER}</strong> was successful.</p>
-                         <p>Check the details: ${env.BUILD_URL}</p>""",
-                mimeType: 'text/html'
-            )
-        }
-        failure {
-            emailext(
-                to: 'ananthkt865@gmail.com',
-                subject: "Jenkins Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """<p>Unfortunately, the Jenkins build <strong>${env.JOB_NAME} #${env.BUILD_NUMBER}</strong> failed.</p>
-                         <p>Check the details: ${env.BUILD_URL}</p>""",
-                mimeType: 'text/html'
-            )
-        }
+post {
+    always {
+        emailext to: 'ananthkt865@gmail.com',
+                 subject: 'Jenkins Pipeline Build Status: ${currentBuild.currentResult}',
+                 body: "Build status: ${currentBuild.currentResult}\nCheck the Jenkins build at: ${env.BUILD_URL}"
     }
 }
+
+    
