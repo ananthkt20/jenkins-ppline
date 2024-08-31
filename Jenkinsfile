@@ -53,12 +53,14 @@ pipeline {
         }
     }
 
-post {
-    always {
-        emailext to: 'ananthkt865@gmail.com',
-                 subject: 'Jenkins Pipeline Build Status: ${currentBuild.currentResult}',
-                 body: "Build status: ${currentBuild.currentResult}\nCheck the Jenkins build at: ${env.BUILD_URL}"
+    post {
+        always {
+            emailext(
+                to: 'ananthkt865@gmail.com',
+                subject: "Jenkins Pipeline Build Status: ${currentBuild.currentResult}",
+                body: """Build status: ${currentBuild.currentResult}
+                Check the Jenkins build at: ${env.BUILD_URL}"""
+            )
+        }
     }
-}
-
 }
