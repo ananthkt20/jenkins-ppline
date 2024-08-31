@@ -53,21 +53,24 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            echo 'Cleaning up...'
-            // Example cleanup steps
-            // sh 'mvn clean'
-        }
+   post {
         success {
-            echo 'Pipeline completed successfully!'
-            // Email notification or other post-success actions
-            // emailext(...)
+            emailext(
+                to: 'ananthkt865@gmail.com',
+                subject: "Jenkins Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """<p>Good news! The Jenkins build <strong>${env.JOB_NAME} #${env.BUILD_NUMBER}</strong> was successful.</p>
+                         <p>Check the details: ${env.BUILD_URL}</p>""",
+                mimeType: 'text/html'
+            )
         }
         failure {
-            echo 'Pipeline failed!'
-            // Email notification or other post-failure actions
-            // emailext(...)
+            emailext(
+                to: 'ananthkt865@gmail.com',
+                subject: "Jenkins Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """<p>Unfortunately, the Jenkins build <strong>${env.JOB_NAME} #${env.BUILD_NUMBER}</strong> failed.</p>
+                         <p>Check the details: ${env.BUILD_URL}</p>""",
+                mimeType: 'text/html'
+            )
         }
     }
 }
